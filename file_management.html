@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件管理</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background: #007bff;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        .container {
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        input[type="file"] {
+            margin: 10px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background: #007bff;
+            color: white;
+        }
+        .actions button {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .actions button:hover {
+            background: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>文件管理</h1>
+    </div>
+    <div class="container">
+        <input type="file" id="fileUpload" />
+        <button onclick="uploadFile()">上传文件</button>
+        <table>
+            <thead>
+                <tr>
+                    <th>文件名</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="fileList">
+                <!-- 文件列表 -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+        const files = []; // 模拟文件列表
+
+        function uploadFile() {
+            const fileInput = document.getElementById('fileUpload');
+            if (fileInput.files.length > 0) {
+                const fileName = fileInput.files[0].name;
+                files.push(fileName);
+                updateFileList();
+                fileInput.value = ''; // 清空文件输入
+            }
+        }
+
+        function deleteFile(fileName) {
+            const index = files.indexOf(fileName);
+            if (index > -1) {
+                files.splice(index, 1);
+                updateFileList();
+            }
+        }
+
+        function updateFileList() {
+            const fileList = document.getElementById('fileList');
+            fileList.innerHTML = files.map(file => `
+                <tr>
+                    <td>${file}</td>
+                    <td class="actions">
+                        <button onclick="downloadFile('${file}')">下载</button>
+                        <button onclick="deleteFile('${file}')">删除</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function downloadFile(fileName) {
+            // 实现文件下载功能
+            alert(`下载文件: ${fileName}`);
+        }
+    </script>
+</body>
+</html>
